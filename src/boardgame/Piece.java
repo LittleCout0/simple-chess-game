@@ -3,13 +3,11 @@ package boardgame;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Piece {
+public abstract class Piece {
     protected Position position;
     private Board board;
 
-    public Piece(){}
-
-    public Piece(Board board){
+    public Piece(Board board) {
         this.board = board;
         position = null;
     }
@@ -18,15 +16,21 @@ public class Piece {
         return board;
     }
 
-    public List<Piece> possibleMoves(){
-        return new ArrayList<>();
+    public abstract boolean[][] possibleMoves();
+
+    public boolean possibleMove(Position position) {
+        return possibleMoves()[position.getRow()][position.getColumn()];
     }
 
-    public Boolean possibleMove(Position position){
-        return Boolean.TRUE;
-    }
-
-    public Boolean isThereAnyPossibleMove(){
-        return Boolean.TRUE;
+    public Boolean isThereAnyPossibleMove() {
+        boolean[][] mat = possibleMoves();
+        for (int i = 0; i < mat.length; i++) {
+            for (int j = 0; j < mat.length; j++) {
+                if (mat[i][j]) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }
